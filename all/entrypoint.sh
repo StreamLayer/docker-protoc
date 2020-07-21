@@ -44,7 +44,7 @@ GEN_RBI=false
 GEN_TYPESCRIPT=false
 LINT=false
 LINT_CHECKS=""
-SUPPORTED_LANGUAGES=("go" "ruby" "csharp" "java" "python" "objc" "gogo" "php" "node" "web" "cpp" "descriptor_set" "scala")
+SUPPORTED_LANGUAGES=("go" "ruby" "csharp" "java" "python" "objc" "gogo" "php" "node" "web" "cpp" "descriptor_set" "scala" "javalite")
 EXTRA_INCLUDES=""
 OUT_DIR=""
 GO_SOURCE_RELATIVE=""
@@ -285,6 +285,8 @@ Mgoogle/protobuf/field_mask.proto=github.com/gogo/protobuf/types,\
 ${GO_PACKAGE_MAP}\
 plugins=grpc+embedded\
 :$OUT_DIR"
+    "javalite")
+        GEN_STRING="--grpc_out=lite:$OUT_DIR --java_out=lite:$OUT_DIR --plugin=protoc-gen-grpc=`which protoc-gen-grpc-java`"
         ;;
     "java")
         GEN_STRING="--grpc_out=$OUT_DIR --${GEN_LANG}_out=$OUT_DIR --plugin=protoc-gen-grpc=`which protoc-gen-grpc-java`"
