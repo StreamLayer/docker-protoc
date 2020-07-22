@@ -285,6 +285,7 @@ Mgoogle/protobuf/field_mask.proto=github.com/gogo/protobuf/types,\
 ${GO_PACKAGE_MAP}\
 plugins=grpc+embedded\
 :$OUT_DIR"
+        ;;
     "javalite")
         GEN_STRING="--grpc_out=lite:$OUT_DIR --java_out=lite:$OUT_DIR --plugin=protoc-gen-grpc=`which protoc-gen-grpc-java`"
         ;;
