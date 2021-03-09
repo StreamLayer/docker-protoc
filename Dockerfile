@@ -66,12 +66,12 @@ RUN go get -u google.golang.org/grpc
 # install protoc-gen-grpc-gateway and protoc-gen-openapiv2
 RUN set -e && \
     GO111MODULE=on go get -u github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@v${grpc_gateway_version} && \
-    cd /go/pkg/mod/github.com/grpc-ecosystem/grpc-gateway/v2@v${grpc_gateway_version}/protoc-gen-grpc-gateway && \
+    cd $GOPATH/pkg/mod/github.com/grpc-ecosystem/grpc-gateway/v2@v${grpc_gateway_version}/protoc-gen-grpc-gateway && \
     go install .
 
 RUN set -e && \
     GO111MODULE=on go get -u github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@v${grpc_gateway_version} && \
-    cd /go/pkg/mod/github.com/grpc-ecosystem/grpc-gateway/v2@v${grpc_gateway_version}/protoc-gen-openapiv2 && \
+    cd $GOPATH/pkg/mod/github.com/grpc-ecosystem/grpc-gateway/v2@v${grpc_gateway_version}/protoc-gen-openapiv2 && \
     go install .
 
 RUN go get -u github.com/gogo/protobuf/protoc-gen-gogo
@@ -80,17 +80,16 @@ RUN go get -u github.com/gogo/protobuf/protoc-gen-gogofast
 RUN go get -u github.com/ckaznocha/protoc-gen-lint
 RUN go get -u github.com/pseudomuto/protoc-gen-doc/cmd/protoc-gen-doc
 
-RUN go get -u github.com/micro/micro/cmd/protoc-gen-micro
+RUN go get -u github.com/micro/micro/v3/cmd/protoc-gen-micro@master
 
-RUN go get -d github.com/envoyproxy/protoc-gen-validate
-RUN make -C /go/src/github.com/envoyproxy/protoc-gen-validate/ build
+RUN go get github.com/envoyproxy/protoc-gen-validate
 
-RUN go get -u github.com/mwitkow/go-proto-validators/protoc-gen-govalidators
+RUN go get github.com/mwitkow/go-proto-validators/protoc-gen-govalidators@v0.3.2
 
 # Add Ruby Sorbet types support (rbi)
 RUN go get -u github.com/coinbase/protoc-gen-rbi
 
-RUN go get github.com/gomatic/renderizer/cmd/renderizer
+RUN go get github.com/gomatic/renderizer/cmd/renderizer@master
 
 # Origin protoc-gen-go should be installed last, for not been overwritten by any other binaries(see #210)
 RUN go get -u github.com/golang/protobuf/protoc-gen-go
@@ -149,8 +148,8 @@ COPY --from=build /tmp/protoc-gen-scala /usr/local/bin/
 
 COPY --from=build /go/pkg/mod/github.com/grpc-ecosystem/grpc-gateway/v2@v${grpc_gateway_version}/protoc-gen-openapiv2/options /opt/include/protoc-gen-openapiv2/options/
 
-COPY --from=build /go/src/github.com/envoyproxy/protoc-gen-validate/ /opt/include/
-COPY --from=build /go/src/github.com/mwitkow/go-proto-validators/ /opt/include/github.com/mwitkow/go-proto-validators/
+COPY --from=build /go/bin/protoc-gen-validate /opt/include/protoc-gen-validate
+COPY --from=build /go/pkg/mod/github.com/mwitkow/go-proto-validators@v0.3.2/ /opt/include/github.com/mwitkow/go-proto-validators/
 
 ADD all/entrypoint.sh /usr/local/bin
 RUN chmod +x /usr/local/bin/entrypoint.sh
